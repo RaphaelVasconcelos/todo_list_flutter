@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todos_flutter/widgets/navbar.widget.dart';
 import 'package:todos_flutter/widgets/user-card.widget.dart';
 
 class HomeView extends StatelessWidget {
@@ -8,6 +9,7 @@ class HomeView extends StatelessWidget {
         body: Column(
       children: <Widget>[
         UserCard(),
+        Navbar(),
       ],
     ));
   }
