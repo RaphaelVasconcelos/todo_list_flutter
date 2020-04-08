@@ -1,7 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:todos_flutter/components/button.widget.dart';
+import 'package:todos_flutter/controllers/login.controller.dart';
+import 'package:todos_flutter/views/home.view.dart';
 
-class LoginView extends StatelessWidget {
+class LoginView extends StatefulWidget {
+  @override
+  _LoginViewState createState() => _LoginViewState();
+}
+
+class _LoginViewState extends State<LoginView> {
+  final controller = new LoginController();
+  final scaffoldKey = new GlobalKey<ScaffoldState>();
+  var busy = false;
+
+  handleSignIn() {
+    setState(() {
+      busy = true;
+    });
+    controller.login().then((data) {
+      onSuccess();
+    }).catchError((err) {
+      onError();
+    }).whenComplete(() {
+      onComplete();
+    });
+  }
+
+  onSuccess() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => HomeView(),
+      ),
+    );
+  }
+
+  onError() {
+    var snackbar = new SnackBar(content: new Text("Falha no login"));
+    scaffoldKey.currentState.showSnackBar(snackbar);
+  }
+
+  onComplete() {
+    setState(() {
+      busy = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,9 +70,13 @@ class LoginView extends StatelessWidget {
                   height: 40,
                 ),
                 TDButton(
-                    text: "Login com o Google",
-                    image: "assets/images/google.png",
-                    callback: () {}),
+                  text: "Login com o Google",
+                  image: "assets/images/google.png",
+                  callback: () {},
+                ),
+                SizedBox(
+                  height: 40,
+                ),
               ],
             ),
           ),
